@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IRepository.cs" />
+    <Compile Include="Contracts\IUnitOfWork.cs" />
     <Compile Include="DataContext\EfDbContext.cs" />
     <Compile Include="Migrations\201804182323259_Initial.cs" />
     <Compile Include="Migrations\201804182323259_Initial.Designer.cs">
@@ -54,6 +56,8 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepositoryImpl\SqlRepository.cs" />
+    <Compile Include="UnitOfWorkImpl\SqlUnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Reservations.Core\Reservations.Core.csproj">
