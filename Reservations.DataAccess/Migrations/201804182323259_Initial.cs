@@ -25,7 +25,7 @@ namespace Reservations.DataAccess.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Rating = c.Int(nullable: false),
-                        CreatehDate = c.DateTime(nullable: false),
+                        CreateDate = c.DateTime(nullable: false),
                         Descriptions = c.String(nullable: false),
                         ContactId = c.Int(nullable: false),
                     })
