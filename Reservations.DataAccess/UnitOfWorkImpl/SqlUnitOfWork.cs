@@ -22,6 +22,8 @@ namespace Reservations.DataAccess.UnitOfWorkImpl
         /// </summary>
         private IRepository<Contact> contacts;
 
+        private IRepository<Reservation> reservations;
+
         #endregion
 
         #region Constructors and Desctructors
@@ -45,16 +47,12 @@ namespace Reservations.DataAccess.UnitOfWorkImpl
         /// </summary>
         private ObjectContext Context { get; }
 
-        #endregion
-
-        #region IUnitOfWork Members
-
-        /// <inheritdoc />
-        /// <summary>
-        ///     The contacts.
-        /// </summary>
+        
         public IRepository<Contact> Contacts =>
             this.contacts ?? (this.contacts = new SqlRepository<Contact>(this.Context));
+
+        public IRepository<Reservation> Reservations =>
+            this.reservations ?? (this.reservations = new SqlRepository<Reservation>(this.Context));
 
         /// <inheritdoc />
         /// <summary>

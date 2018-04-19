@@ -1,9 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SqlRepository.cs" company="ISUCorp">
-//   ISUCorp 2018
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
+﻿
 using Reservations.Core.Definitions;
 using Reservations.DataAccess.Contracts;
 
