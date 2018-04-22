@@ -1,0 +1,48 @@
+﻿.create-edit-contact {
+    
+}
+.create-edit-contact .top {
+    margin-bottom: 5px;
+    padding: 10px;
+    background-color: #fafafa;
+    height: 64px;
+}
+.create-edit-contact .my-input-group {
+    position: relative;
+}
+.create-edit-contact input,
+.create-edit-contact select {
+    padding-left: 50px;
+    border-radius: 0;
+}
+.create-edit-contact .my-input-group {
+    margin-bottom: 15px;
+}
+.create-edit-contact .my-input-group img {
+    position: absolute;
+    width: auto;
+    height: 20px;
+    top: 0;
+    left: 5px;
+    bottom: 0;
+    margin: auto;
+}
+    .create-edit-contact .richtext {
+        margin-bottom: 15px;
+    }
+
+@media (max-width: 767px) {
+    .btn-danger {
+        display: block;
+        width: 100%;
+    }
+}
+
+#editor {
+    height: 270px;
+    background-color: #fff;
+}
+.ql-formats {
+    border: 1px solid #d0cfcf;
+    border-radius: 4px;
+}

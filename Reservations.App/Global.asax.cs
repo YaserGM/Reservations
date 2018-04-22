@@ -12,10 +12,12 @@ namespace Reservations.App
     {
         protected void Application_Start()
         {
+            AutofacConfig.Initialize();
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            AutoMapperConfig.InitializeMapper();
         }
     }
 }

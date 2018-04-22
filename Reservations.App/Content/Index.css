@@ -1,0 +1,42 @@
+﻿.index-list-page {
+    background-color: #fafafa;
+    padding: 5px;
+}
+.index-table {
+    margin: 5px;
+}
+    .index-table tbody tr {
+        border-bottom: 5px solid #fafafa;
+    }
+.index-table,
+.index-table thead tr th,
+.index-table tbody tr td {
+    border: 0;
+    font-size: 12pt;
+    vertical-align: middle;
+}
+
+.index-cell {
+    background-color: #efefef;
+    margin: 1px 1px 1px 1px;
+}
+
+#delete-modal form {
+    display: inline-block;
+    width: auto;
+}
+
+.index-table-footer .pagination > li > a,
+.index-table-footer .pagination > li > span {
+    margin: 1px;
+    color: #5e5e5e;
+    border-color: #c4c4c4;
+    border-radius: 4px;
+    background-color: #ededed;
+}
+    .index-table-footer .pagination > li > a:hover,
+    .index-table-footer .pagination > li.active a {
+        color: #ffffff;
+        background-color: #5e5e5e;
+        border-color: #c4c4c4;
+    }
