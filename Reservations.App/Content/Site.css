@@ -1,24 +1,90 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿/*Base*/
+html,
+body {
+    background-color: #efefef;
+    font-family: Calibri;
 }
 
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+/*Main Header*/
+
+#mainHeader {
+    margin-bottom: 15px;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-.dl-horizontal dt {
-    white-space: normal;
+#mainHeader .banner {
+    position: relative;
+    height: 110px;
+    background: url(Images/largeBanner.png) #acacac;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+    #mainHeader .banner .container {
+        position: relative;
+        height: 100%;
+    }
+
+#mainHeader .banner img {
+    position: absolute;
+    height: 50%;
+    top: 0;
+    bottom: 0;
+    left: 15px;
+    margin: auto;
+}
+
+@media (max-width: 767px) {
+    #mainHeader .banner {
+        height: 70px;
+    }
+}
+
+#mainHeader .sub-banner {
+    position: relative;
+    min-height: 60px;
+    padding: 10px 0;
+    background-color: #f8f8f8;
+}
+
+    #mainHeader .sub-banner .page-title {
+        margin: 0;
+        color: #bb0000;
+        font-size: 18pt;
+    }
+
+    #mainHeader .sub-banner .description {
+        margin: 0 0 5px 0;
+        width: 100%;
+        color: #7c7c7c;
+    }
+
+    .btn {
+        margin: 0;
+        min-width: 100px;
+        padding: 5px 15px;
+        background-color: #acacac;
+        color: #ffffff;
+        font-size: 13pt;
+        border-radius: 0;
+    }
+    .btn.btn-primary {
+        background-color: #337ab7;
+        border-color: #2e6da4;
+    }
+    .btn.btn-primary:hover {
+        background-color: #286090;
+        border-color: #204d74;
+    }
+    .btn.btn-danger {
+        background-color: #d9534f;
+        border-color: #d43f3a;
+    }
+    .btn.btn-danger:hover {
+        background-color: #c9302c;
+        border-color: #ac2925;
+    }
+
+.glyphicon-warning-sign {
+    color: #e7d823;
 }
