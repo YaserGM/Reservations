@@ -1,0 +1,132 @@
+﻿@using System.ServiceModel.Activities
+@using Reservations.Core
+@model IEnumerable<Reservations.App.Models.ReservationDto>
+
+@{
+    ViewBag.Title = "Reservations List";
+    ViewBag.LabelBtn = "Create Reservation";
+    ViewBag.Action = "Create";
+    ViewBag.Controller = "Reservations";
+}
+
+<article class="index-list-page">
+
+    @using (Html.BeginForm("Index", "Reservations", new {ViewBag.page, ViewBag.sort}, FormMethod.Post, new {id = "form-sort"}))
+    {
+        <article class="create-edit-contact">
+            <div class="col-xs-12 col-sm-2 col-md-4">
+                <div class="my-input-group">
+                    <img src="~/Content/Images/filter.png"/>
+                    @Html.DropDownList("sort", (List<SelectListItem>) this.ViewBag.listSorts, htmlAttributes: new {@class = "form-control input-lg", @id = "drowfiltre"})
+                </div>
+            </div>
+        </article>
+    }
+
+
+    <div>
+        <table class="table table-responsive index-table" id="tableReserv">
+
+            @foreach (var item in Model)
+            {
+                <tr class="index-cell">
+                    <td>
+
+                        <div class="col-xs-12 col-sm-8 col-md-2">
+                            <img src="@Url.Content("~/Content/Images/reservationLogo.png")" alt="Image"
+                                 width="50" height="50"/>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-10">
+                            @Html.DisplayFor(modelItem => item.Contact.Name)
+                            <br/>
+                             @Html.DisplayFor(modelItem => item.CreateDate) 
+                        </div>
+
+
+                    </td>
+                    <td>
+                        <div class="text-left">
+                            @Html.LabelFor(modelItem => item.RanKing)
+
+                            @Html.TextBoxFor(modelItem => item.RanKing, htmlAttributes: new {@class = "rating", @id = "imp-" + @item.Id})
+                        </div>
+                    </td>
+                    <td>
+                        <div> <label>Add Favorite</label> <img src="@Url.Content("~/Content/Images/heartDisable.png")" alt="Image"/></div>
+                    </td>
+                    <td>
+                        <div class="text-right">
+                            <a href="@Url.Action("Edit", "Reservations", new {ViewBag.page, ViewBag.sort, id = item.Id})" class="btn text-uppercase">@Localization.Edit</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+
+
+    <!-- Pagination component -->
+    <nav class="index-table-footer">
+        <ul class="pagination">
+            <li>
+                <a href="@Url.Action("Index", "Reservations", new {page = 1, sort = ViewBag.sort})">
+                    <span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span>
+                </a>
+            </li>
+
+            @for (var i = 1; i <= ViewBag.PageCount; i++)
+            {
+                if (ViewBag.page == i)
+                {
+                    <li class="active">
+                        <a href="@Url.Action("Index", "Reservations", new {page = i, sort = ViewBag.sort})">@i</a>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a href="@Url.Action("Index", "Reservations", new {page = i, sort = ViewBag.sort})">@i</a>
+                    </li>
+                }
+            }
+
+            <li>
+                <a href="@Url.Action("Index", "Reservations", new {page = @ViewBag.PageCount, sort = ViewBag.sort})">
+                    <span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+
+</article>
+
+<script type="text/javascript">
+    $(document).ready(
+        $("#drowfiltre").change(function() {
+            if ($("#drowfiltre").val() !== "0") {
+                $("#form-sort").submit();
+            }
+        })
+    );
+
+
+    //call in function starClick by file "start-rating.js"
+    function updateRating(impId, startValue) {
+        var compId = parseInt(impId.split("-")[1]);
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UpdateRating")',
+            dataType: 'json',
+            data: { id: compId, value: startValue },
+            success: function(stops) {
+            },
+            error: function(ex) {
+            }
+        });
+
+
+    }
+</script>

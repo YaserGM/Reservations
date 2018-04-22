@@ -1,42 +1,52 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Reservacions</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/knockout-3.4.2.js"></script>
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+
+<header id="mainHeader">
+    <div class="banner">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
+            <img class="hidden-xs" src="~/Content/Images/largeLogo.png"/>
+            <img class="visible-xs" src="~/Content/Images/smallLogo.png"/>
+        </div>
+    </div>
+    <div class="sub-banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-4 text-left">
+                    <h2 class="page-title">@ViewBag.Title</h2>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <p class="description">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    </p>
+                </div>
+                <div class="col-sm-4 hidden-xs text-right">
+                    <a href="@Url.Action(@ViewBag.Action, @ViewBag.Controller, new {ViewBag.page, ViewBag.sort})" class="btn text-uppercase">@ViewBag.LabelBtn</a>
+                </div>
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
+</header>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+
+<div class="container" id="main-container">
+    @RenderBody()
+</div>
+
+
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/modules_js")
+
+
+@RenderSection("scripts", required: false)
 </body>
 </html>

@@ -1,0 +1,100 @@
+﻿@model Reservations.App.Models.ReservationDto
+@using Reservations.Core
+@{
+    ViewBag.Title = Localization.TitleCreateReservation;
+    ViewBag.LabelBtn = Localization.BtnReservationList;
+    ViewBag.Action = "Index";
+    ViewBag.Controller = "Reservations";
+}
+
+
+@using (Html.BeginForm("Create", "Reservations", new { ViewBag.page, ViewBag.sort }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+
+    <article class="create-edit-contact">
+
+        @Html.HiddenFor(model => model.Descriptions, new {id = "_description"})
+        @Html.HiddenFor(model => model.Contact.Id, new {id = "_Id"})
+        @Html.HiddenFor(model => model.RanKing)
+        @Html.HiddenFor(model => model.CreateDate)
+        @Html.HiddenFor(model => model.ContactId)
+
+        <div class="top">
+            <div class="row">
+
+
+                <div class="col-xs-12 col-sm-6 col-md-3">
+                    <div class="my-input-group">
+                        <div class="form-group has-feedback">
+                            <img src="~/Content/Images/user.png"/>
+                            @Html.EditorFor(model => model.Contact.Name,
+                                new {htmlAttributes = new {@class = "form-control input-lg", @id = "imp-contact", @placeholder = @Localization.ContactName}})
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Contact.Name, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-6 col-md-3">
+                    <div class="my-input-group">
+                        <div class="form-group has-feedback">
+                            <img src="~/Content/Images/type.png"/>
+
+                            @Html.DropDownListFor(m => m.Contact.ContactType, (List<SelectListItem>)@ViewBag.contactTypeList, @Localization.ContactType,
+                                htmlAttributes: new {@class = "form-control input-lg", @id = "drow-contactType"})
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Contact.ContactType, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-6 col-md-3">
+                    <div class="my-input-group">
+                        <div class="form-group has-feedback">
+                            <img src="~/Content/Images/phone.png"/>
+                            @Html.EditorFor(model => model.Contact.PhoneNumber,
+                                new {htmlAttributes = new {@class = "form-control input-lg", @id = "phone-number", @placeholder = @Localization.PhoneNumber}})
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Contact.PhoneNumber, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-6 col-md-3">
+                    <div class="my-input-group">
+                        <div class="form-group has-feedback">
+                            <img src="~/Content/Images/calendar.png"/>
+                            @Html.EditorFor(model => model.Contact.Birthdate,
+                                new {htmlAttributes = new {@class = "form-control input-lg", @id = "imp-birthdate", @placeholder = @Localization.Birthdate}})
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Contact.Birthdate, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="richtext">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div id="editor">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 text-right">
+                <button id="btn-send" type="submit" class="btn btn-danger btn-lg text-uppercase">
+                    @Localization.Send
+                </button>
+
+            </div>
+        </div>
+
+    </article>
+}
+
+@section scripts
+{
+    <script src="~/Scripts/Reservation/EditResrvation.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+}
