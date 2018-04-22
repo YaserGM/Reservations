@@ -50,9 +50,9 @@
     <Compile Include="Contracts\IRepository.cs" />
     <Compile Include="Contracts\IUnitOfWork.cs" />
     <Compile Include="DataContext\EfDbContext.cs" />
-    <Compile Include="Migrations\201804182323259_Initial.cs" />
-    <Compile Include="Migrations\201804182323259_Initial.Designer.cs">
-      <DependentUpon>201804182323259_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201804222307189_Initial.cs" />
+    <Compile Include="Migrations\201804222307189_Initial.Designer.cs">
+      <DependentUpon>201804222307189_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -70,8 +70,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201804182323259_Initial.resx">
-      <DependentUpon>201804182323259_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201804222307189_Initial.resx">
+      <DependentUpon>201804222307189_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

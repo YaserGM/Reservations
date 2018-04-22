@@ -10,20 +10,24 @@
 
     public class Reservation : DataBaseEntity
     {
-        [Required]
-        public int Rating { get; set; }
+      
+        [Required(ErrorMessageResourceType = typeof(Localization), ErrorMessageResourceName = "FieldRequired")]
+        [Display(ResourceType = typeof(Localization), Name = "RanKing")]
+        public double RanKing { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(Localization), ErrorMessageResourceName = "FieldRequired")]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = @"{0:dddd, MMMM d, yyyy}")]
         public DateTime CreateDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(Localization), ErrorMessageResourceName = "FieldRequired")]
         public string Descriptions { get; set; }
 
         [Required]
         public int ContactId { get; set; }
 
         [ForeignKey("ContactId")]
-        public Contact Contact { get; set; }
+        public virtual Contact Contact { get; set; }
 
     }
 }
