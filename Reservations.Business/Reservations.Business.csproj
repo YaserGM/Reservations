@@ -31,6 +31,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Collections" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,7 +42,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dto\CollectionResponse.cs" />
+    <Compile Include="Dto\PageResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Contacts\ContactService.cs" />
+    <Compile Include="Services\Contacts\IContactService.cs" />
+    <Compile Include="Services\Reservations\ReservationService.cs" />
+    <Compile Include="Services\Reservations\IReservationService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Reservations.Core\Reservations.Core.csproj">
+      <Project>{f31ffc72-2ded-4a16-9c11-498ba03a3640}</Project>
+      <Name>Reservations.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Reservations.DataAccess\Reservations.DataAccess.csproj">
+      <Project>{8B3489B8-F701-4AE9-B4DA-98F1D7B60197}</Project>
+      <Name>Reservations.DataAccess</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
