@@ -1,15 +1,17 @@
-﻿@model Reservations.Core.Entities.Contact
+﻿@using Reservations.Core.Enums
+@model Reservations.Core.Entities.Contact
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Delete Contact";
+    ViewBag.LabelBtn = "Contact List";
+    ViewBag.Action = "Index";
+    ViewBag.Controller = "Contacts";
 }
-
-<h2>Delete</h2>
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Contact</h4>
     <hr />
+    <h4>
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Name)
@@ -40,17 +42,20 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ContactType)
+            @{
+                ContactTypeEnum.TryParse(Model.ContactType.ToString(), out ContactTypeEnum contType);
+                ViewBag.type = contType.ToString();
+            }
+            <p>@ViewBag.type</p>
         </dd>
 
     </dl>
-
+    </h4>
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <input type="submit" value="Delete" class="btn btn-default" />
         </div>
     }
 </div>

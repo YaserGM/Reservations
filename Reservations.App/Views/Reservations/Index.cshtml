@@ -13,14 +13,22 @@
 
     @using (Html.BeginForm("Index", "Reservations", new {ViewBag.page, ViewBag.sort}, FormMethod.Post, new {id = "form-sort"}))
     {
-        <article class="create-edit-contact">
-            <div class="col-xs-12 col-sm-2 col-md-4">
-                <div class="my-input-group">
-                    <img src="~/Content/Images/filter.png"/>
-                    @Html.DropDownList("sort", (List<SelectListItem>) this.ViewBag.listSorts, htmlAttributes: new {@class = "form-control input-lg", @id = "drowfiltre"})
-                </div>
+    <article class="create-edit-contact">
+        <div class="col-xs-12 col-sm-2 col-md-4">
+            <div class="my-input-group">
+                <img src="~/Content/Images/filter.png" />
+                @Html.DropDownList("sort", (List<SelectListItem>)this.ViewBag.listSorts, htmlAttributes: new { @class = "form-control input-lg", @id = "drowfiltre" })
             </div>
-        </article>
+        </div>
+
+
+        <h4>
+            <div class="form-group-lg text-right">
+                @Html.ActionLink("View Contact List", "Index", "Contacts")
+            </div>
+        </h4>
+
+    </article>
     }
 
 

@@ -11,72 +11,36 @@ using Reservations.App.Models;
 using Reservations.Business.Dto;
 using Reservations.Business.Services.Contacts;
 using Reservations.Core.Entities;
+using Reservations.Core.Enums;
 using Reservations.DataAccess.DataContext;
 
 namespace Reservations.App.Controllers
 {
     public class ContactsController : Controller
     {
-        private readonly IContactService contactService;
-
-        //Quitar
-        private EfDbContext db = new EfDbContext();
+        private readonly IContactService _contactService;
 
 
         public ContactsController(IContactService contactService)
         {
-            this.contactService = contactService;
+            this._contactService = contactService;
         }
 
 
         // GET: Contacts
-        public ActionResult Index()
+        public ActionResult Index(int page = 1)
         {
-            /*const int MaxCount = 5;
-            var skipCount = (page - 1) * MaxCount;
-            var response = this.contactService.GetAll(new PaginationResult(skipCount, MaxCount));
-            var entityList = response.Items;
-            var dtoList = Mapper.Map<List<Contact>, List<ContactDto>>(entityList);
-            this.ViewBag.PageCount = (int)Math.Ceiling((double)response.SourceTotal / MaxCount);
-            this.ViewBag.CurrentPage = page;
-            return this.View(dtoList);*/
-
-
-            var response = this.contactService.GetAll();
-            var dtoList = Mapper.Map<List<Contact>, List<ContactDto>>(response.Items);
-
-            return this.View(dtoList);
-
-
-            //return View(db.Contacts.ToList());
+            var contactDetoList = ContactsDetoList(page);
+            return this.View(contactDetoList);
         }
 
-        // GET: Contacts/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Contact contact = db.Contacts.Find(id);
-            if (contact == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(contact);
-        }
-
-        // GET: Contacts/Create
         public ActionResult Create()
         {
+            ViewBag.contactTypeList = Helper.EnumHelper.ToListSelectListItem<ContactTypeEnum>();
             return View();
         }
 
-        // POST: Contacts/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,PhoneNumber,Birthdate,Contacttype")]
@@ -84,34 +48,30 @@ namespace Reservations.App.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Contacts.Add(contact);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var findContact = _contactService.Get(contact.Name);
+                if (findContact == null)
+                {
+                    _contactService.Add(contact);
+                    return RedirectToAction("Index");
+                }
             }
 
-            return View();
+            contact.Name = null;
+            return View(contact);
         }
 
         // GET: Contacts/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Contact contact = db.Contacts.Find(id);
+            var contact = _contactService.Get(id);
             if (contact == null)
             {
                 return HttpNotFound();
             }
-
+            ViewBag.contactTypeList = Helper.EnumHelper.ToListSelectListItem<ContactTypeEnum>();
             return View(contact);
         }
 
-        // POST: Contacts/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,PhoneNumber,Birthdate,Contacttype")]
@@ -119,8 +79,7 @@ namespace Reservations.App.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(contact).State = EntityState.Modified;
-                db.SaveChanges();
+                _contactService.Update(contact);
                 return RedirectToAction("Index");
             }
 
@@ -128,19 +87,13 @@ namespace Reservations.App.Controllers
         }
 
         // GET: Contacts/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Contact contact = db.Contacts.Find(id);
+            var contact = _contactService.Get(id);
             if (contact == null)
             {
                 return HttpNotFound();
             }
-
             return View(contact);
         }
 
@@ -149,9 +102,12 @@ namespace Reservations.App.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Contact contact = db.Contacts.Find(id);
-            db.Contacts.Remove(contact);
-            db.SaveChanges();
+            var contact = _contactService.Get(id);
+            if (contact != null && contact.Id > 0)
+            {
+                _contactService.Delete(id);
+            }
+           
             return RedirectToAction("Index");
         }
 
@@ -162,7 +118,7 @@ namespace Reservations.App.Controllers
                 return null;
             }
 
-            var contact = this.contactService.Get(id);
+            var contact = this._contactService.Get(id);
             var contactDto = Mapper.Map<ContactDto>(contact);
 
 
@@ -176,7 +132,7 @@ namespace Reservations.App.Controllers
                 return null;
             }
 
-            var contact = this.contactService.Get(name);
+            var contact = this._contactService.Get(name);
             var contactDto = new ContactDto();
             if (contact != null)
             {
@@ -195,7 +151,7 @@ namespace Reservations.App.Controllers
                 return null;
             }
 
-            var contact = this.contactService.Get(name);
+            var contact = this._contactService.Get(name);
             var contactDto = new ContactDto();
             if (contact != null)
             {
@@ -208,14 +164,18 @@ namespace Reservations.App.Controllers
             return RedirectToAction("Edit");
         }
 
-        protected override void Dispose(bool disposing)
+        private List<Contact> ContactsDetoList(int page)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
+            const int maxPage = 5;
+            var skipCount = (page - 1) * maxPage;
 
-            base.Dispose(disposing);
+            var response =
+                this._contactService.GetAll(new PageResult(skipCount, maxPage));
+
+            
+            this.ViewBag.PageCount = (int) Math.Ceiling((double) response.SourceTotal / maxPage);
+            this.ViewBag.page = page;
+            return response.Items;
         }
     }
 }
