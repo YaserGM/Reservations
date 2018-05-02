@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using Reservations.Business.Dto;
+using Reservations.Core;
 using Reservations.Core.Entities;
 using Reservations.DataAccess.Contracts;
 
@@ -28,6 +29,7 @@ namespace Reservations.Business.Services.Contacts
 
         public Contact Add(Contact input)
         {
+            input.ContactType = null;
             this.repository.Add(input);
             this.unitOfWork.SaveChanges();
             return input;
@@ -79,10 +81,8 @@ namespace Reservations.Business.Services.Contacts
 
             found.Name = input.Name;
             found.Birthdate = input.Birthdate;
-            found.ContactType = input.ContactType;
+            found.ContactTypeId = input.ContactTypeId;
             found.PhoneNumber = input.PhoneNumber;
-            //found.Description = input.Description;
-
             this.unitOfWork.SaveChanges();
             return null;
         }
@@ -105,8 +105,8 @@ namespace Reservations.Business.Services.Contacts
                 return found;
             }
 
-            // var message = string.Format(Localization.ContactNotExists, id);
-            throw new Exception("essss" /*message*/);
+            var message = string.Format(Localization.ContactNotExists, id);
+            throw new Exception(message);
         }
 
 

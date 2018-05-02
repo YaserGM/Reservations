@@ -18,6 +18,10 @@ namespace Reservations.Business.Services.Reservations
 
         Reservation Update(Reservation input);
 
+        bool UpdateRanKing(int id, double value);
+
+        bool UpdateFavorite(int id, bool value);
+
         void Delete(int id);
     }
 }

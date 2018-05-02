@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Threading;
 using Reservations.Business.Dto;
 using Reservations.Core;
 using Reservations.Core.Entities;
@@ -43,6 +46,7 @@ namespace Reservations.Business.Services.Reservations
         {
             var contact = input.Contact;
             input.Contact = null;
+            input.CreateDate = DateTime.Now;
             this.repository.Add(input);
             this.unitOfWork.SaveChanges();
             input.Contact = contact;
@@ -58,21 +62,6 @@ namespace Reservations.Business.Services.Reservations
 
         public CollectionResponse<Reservation> GetAll(PageResult input)
         {
-            //if (input.SkipCount < 0)
-            //{
-            //    input.SkipCount = 0;
-            //}
-
-            //if (input.MaxCount < 0)
-            //{
-            //    input.MaxCount = 0;
-            //}
-
-            //var entities = this.repository.GetAll();
-            //var result = entities.OrderBy(t => t.RanKing).Skip(input.SkipCount).Take(input.MaxCount).ToList();
-            //var response = new CollectionResponse<Reservation> {SourceTotal = entities.Count()};
-            //response.Items.AddRange(result);
-            //return response;
             var entities = this.repository.GetAll();
             var response = GetPageReservation(entities.ToList(), input);
             return response;
@@ -95,7 +84,7 @@ namespace Reservations.Business.Services.Reservations
 
             switch (order)
             {
-                case Ranking:
+                case RanKing:
                     result = entities.OrderByDescending(t => t.RanKing).ToList();
                     break;
                 case DateAscending:
@@ -131,11 +120,35 @@ namespace Reservations.Business.Services.Reservations
         {
             var found = this.ValidateReservationExists(input.Id);
 
+            found.ContactId = input.ContactId;
             found.RanKing = input.RanKing;
             found.Descriptions = input.Descriptions;
+            found.Favorite = input.Favorite;
 
             this.unitOfWork.SaveChanges();
             return null;
+        }
+
+        public bool UpdateRanKing(int id, double value)
+        {
+            var command = "sp_Reservation_Update_RanKing @id, @value";
+
+            var reseult = unitOfWork.ExecuteStoreCommand(command,
+                new SqlParameter() {ParameterName = "@id", Value = id},
+                new SqlParameter() {ParameterName = "@value", Value = value});
+
+            return reseult == 1;
+        }
+
+        public bool UpdateFavorite(int id, bool value)
+        {
+            var command = "sp_Reservation_Update_Favorite @id, @value";
+
+            var reseult = unitOfWork.ExecuteStoreCommand(command,
+                new SqlParameter() { ParameterName = "@id", Value = id },
+                new SqlParameter() { ParameterName = "@value", Value = value });
+
+            return reseult == 1;
         }
 
 
@@ -156,7 +169,7 @@ namespace Reservations.Business.Services.Reservations
                 return found;
             }
 
-             var message = string.Format(Localization.ContactNotExists, id);
+            var message = string.Format(Localization.ReservationNotExists, id);
             throw new Exception(message);
         }
 
