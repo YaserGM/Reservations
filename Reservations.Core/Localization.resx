@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddFavorite" xml:space="preserve">
+    <value>Add Favorite</value>
+  </data>
   <data name="AlphabeticAscending" xml:space="preserve">
     <value>By Alphabetic Ascending</value>
   </data>
@@ -124,13 +127,16 @@
     <value>By Alphabetic Descending</value>
   </data>
   <data name="Birthdate" xml:space="preserve">
-    <value>Birthdate</value>
+    <value>Birth Date</value>
   </data>
   <data name="BtnReservationList" xml:space="preserve">
     <value>Reservation List</value>
   </data>
   <data name="ContactName" xml:space="preserve">
-    <value>Contact name ...</value>
+    <value>Contact Name</value>
+  </data>
+  <data name="ContactNameLabel" xml:space="preserve">
+    <value>Contact Name ...</value>
   </data>
   <data name="ContactNotExists" xml:space="preserve">
     <value>There is no contact with that id. Id: {0}</value>
@@ -138,11 +144,23 @@
   <data name="ContactType" xml:space="preserve">
     <value>Contact Type</value>
   </data>
+  <data name="ContactTypeNotExists" xml:space="preserve">
+    <value>There is no contact type with that id. Id: {0}</value>
+  </data>
+  <data name="CreateContact" xml:space="preserve">
+    <value>Create Contact</value>
+  </data>
   <data name="DateAscending" xml:space="preserve">
     <value>By Date Ascending</value>
   </data>
   <data name="DateDescending" xml:space="preserve">
     <value>By Date Descending</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
@@ -157,21 +175,33 @@
     <value>Name</value>
   </data>
   <data name="PhoneNumber" xml:space="preserve">
-    <value>Phone Number</value>
+    <value>Phone</value>
   </data>
   <data name="PhoneNumberInvalid" xml:space="preserve">
     <value>The phone number Invalid</value>
   </data>
+  <data name="PhoneNumberLabel" xml:space="preserve">
+    <value>Phone:     -     -    </value>
+  </data>
   <data name="RanKing" xml:space="preserve">
     <value>RanKing</value>
   </data>
+  <data name="ReservationNotExists" xml:space="preserve">
+    <value>There is no reservation with that id. Id: {0}</value>
+  </data>
   <data name="Send" xml:space="preserve">
     <value>Send</value>
+  </data>
+  <data name="TitleContactList" xml:space="preserve">
+    <value>Contact List</value>
   </data>
   <data name="TitleCreateReservation" xml:space="preserve">
     <value>Create Reservation</value>
   </data>
   <data name="TitleEditReservation" xml:space="preserve">
     <value>Edit Reservation</value>
+  </data>
+  <data name="TitleReservationsList" xml:space="preserve">
+    <value>Reservations List</value>
   </data>
 </root>

@@ -61,6 +61,15 @@ namespace Reservations.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Favorite.
+        /// </summary>
+        public static string AddFavorite {
+            get {
+                return ResourceManager.GetString("AddFavorite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to By Alphabetic Ascending.
         /// </summary>
         public static string AlphabeticAscending {
@@ -79,7 +88,7 @@ namespace Reservations.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Birthdate.
+        ///   Looks up a localized string similar to Birth Date.
         /// </summary>
         public static string Birthdate {
             get {
@@ -97,11 +106,20 @@ namespace Reservations.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contact name ....
+        ///   Looks up a localized string similar to Contact Name.
         /// </summary>
         public static string ContactName {
             get {
                 return ResourceManager.GetString("ContactName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contact Name ....
+        /// </summary>
+        public static string ContactNameLabel {
+            get {
+                return ResourceManager.GetString("ContactNameLabel", resourceCulture);
             }
         }
         
@@ -124,6 +142,24 @@ namespace Reservations.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is no contact type with that id. Id: {0}.
+        /// </summary>
+        public static string ContactTypeNotExists {
+            get {
+                return ResourceManager.GetString("ContactTypeNotExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create Contact.
+        /// </summary>
+        public static string CreateContact {
+            get {
+                return ResourceManager.GetString("CreateContact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to By Date Ascending.
         /// </summary>
         public static string DateAscending {
@@ -138,6 +174,24 @@ namespace Reservations.Core {
         public static string DateDescending {
             get {
                 return ResourceManager.GetString("DateDescending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
             }
         }
         
@@ -178,7 +232,7 @@ namespace Reservations.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Phone Number.
+        ///   Looks up a localized string similar to Phone.
         /// </summary>
         public static string PhoneNumber {
             get {
@@ -196,6 +250,15 @@ namespace Reservations.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Phone:     -     -    .
+        /// </summary>
+        public static string PhoneNumberLabel {
+            get {
+                return ResourceManager.GetString("PhoneNumberLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to RanKing.
         /// </summary>
         public static string RanKing {
@@ -205,11 +268,29 @@ namespace Reservations.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is no reservation with that id. Id: {0}.
+        /// </summary>
+        public static string ReservationNotExists {
+            get {
+                return ResourceManager.GetString("ReservationNotExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Send.
         /// </summary>
         public static string Send {
             get {
                 return ResourceManager.GetString("Send", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contact List.
+        /// </summary>
+        public static string TitleContactList {
+            get {
+                return ResourceManager.GetString("TitleContactList", resourceCulture);
             }
         }
         
@@ -228,6 +309,15 @@ namespace Reservations.Core {
         public static string TitleEditReservation {
             get {
                 return ResourceManager.GetString("TitleEditReservation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reservations List.
+        /// </summary>
+        public static string TitleReservationsList {
+            get {
+                return ResourceManager.GetString("TitleReservationsList", resourceCulture);
             }
         }
     }

@@ -42,11 +42,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Definitions\IDataBaseEntity.cs" />
+    <Compile Include="Entities\ContactType .cs" />
     <Compile Include="Entities\Reservation.cs" />
     <Compile Include="Entities\Contact.cs" />
     <Compile Include="Entities\DataBaseEntity.cs" />
     <Compile Include="Enums\ContactTypeEnum.cs" />
     <Compile Include="Enums\OrderByEnum.cs" />
+    <Compile Include="Localization.es.Designer.cs">
+      <DependentUpon>Localization.es.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Localization.es-ES.Designer.cs">
       <DependentUpon>Localization.es-ES.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -57,10 +64,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Localization.resx</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Localization.es.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Localization.es.Designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localization.es-ES.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Localization.es-ES.Designer.cs</LastGenOutput>
@@ -70,6 +83,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Localization.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

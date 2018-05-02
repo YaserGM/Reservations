@@ -13,6 +13,6 @@ namespace Reservations.Core.Enums
         [Description("By Date Descending")] DateDescending = 2,
         [Description("By Alphabetic Ascending")] AlphabeticAscending = 3,
         [Description("By Alphabetic Descending")] AlphabeticDescending = 4,
-        Ranking = 5
+        [Description("RanKing")] RanKing = 5
     }
 }
