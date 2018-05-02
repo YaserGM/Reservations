@@ -1,4 +1,5 @@
-﻿@model Reservations.App.Models.ReservationDto
+﻿@model Reservations.App.Models.ReservationViewModel
+@using Reservations.App.Helper
 @using Reservations.Core
 @{
     ViewBag.Title = Localization.TitleCreateReservation;
@@ -8,18 +9,18 @@
 }
 
 
-@using (Html.BeginForm("Create", "Reservations", new { ViewBag.page, ViewBag.sort }, FormMethod.Post))
+@using (Html.BeginForm("Create", "Reservations", new {ViewBag.page, ViewBag.sort}, FormMethod.Post, new {@id = "form-create", data_bind = "submit: sendResevation" }))
 {
     @Html.AntiForgeryToken()
 
-
     <article class="create-edit-contact">
 
-        @Html.HiddenFor(model => model.Descriptions, new {id = "_description"})
-        @Html.HiddenFor(model => model.Contact.Id, new {id = "_Id"})
+        @Html.HiddenFor(model => model.Descriptions, new {data_bind = "value: description"})
+        @Html.HiddenFor(model => model.Contact.Id, new {data_bind = "value: contacId"})
         @Html.HiddenFor(model => model.RanKing)
         @Html.HiddenFor(model => model.CreateDate)
-        @Html.HiddenFor(model => model.ContactId)
+        @Html.HiddenFor(model => model.ContactId, new {data_bind = "value: contacId"})
+        @Html.HiddenFor(model => model.Contact.ContactTypeId, new {data_bind = "value: contactTypeId"})
 
         <div class="top">
             <div class="row">
@@ -30,7 +31,14 @@
                         <div class="form-group has-feedback">
                             <img src="~/Content/Images/user.png"/>
                             @Html.EditorFor(model => model.Contact.Name,
-                                new {htmlAttributes = new {@class = "form-control input-lg", @id = "imp-contact", @placeholder = @Localization.ContactName}})
+                                new
+                                {
+                                    htmlAttributes = new
+                                    {
+                                        @class = "form-control input-lg", @id = "imp-contact",
+                                        @placeholder = @Localization.ContactNameLabel, data_bind = "value: contactName"
+                                    }
+                                })
                         </div>
                         @Html.ValidationMessageFor(model => model.Contact.Name, "", new {@class = "text-danger"})
                     </div>
@@ -40,11 +48,10 @@
                     <div class="my-input-group">
                         <div class="form-group has-feedback">
                             <img src="~/Content/Images/type.png"/>
-
-                            @Html.DropDownListFor(m => m.Contact.ContactType, (List<SelectListItem>)@ViewBag.contactTypeList, @Localization.ContactType,
-                                htmlAttributes: new {@class = "form-control input-lg", @id = "drow-contactType"})
+                            @Html.DropDownList("ContactTypeId", null, @Localization.ContactType,
+                                htmlAttributes: new {@class = "form-control input-lg", data_bind = "value: contactTypeId"})
                         </div>
-                        @Html.ValidationMessageFor(model => model.Contact.ContactType, "", new {@class = "text-danger"})
+                        @Html.ValidationMessageFor(model => model.Contact.ContactTypeId, "", new {@class = "text-danger"})
                     </div>
                 </div>
 
@@ -53,7 +60,14 @@
                         <div class="form-group has-feedback">
                             <img src="~/Content/Images/phone.png"/>
                             @Html.EditorFor(model => model.Contact.PhoneNumber,
-                                new {htmlAttributes = new {@class = "form-control input-lg", @id = "phone-number", @placeholder = @Localization.PhoneNumber}})
+                                new
+                                {
+                                    htmlAttributes = new
+                                    {
+                                        @class = "form-control input-lg",
+                                        @placeholder = @Localization.PhoneNumberLabel, data_bind = "value: phonenumber"
+                                    }
+                                })
                         </div>
                         @Html.ValidationMessageFor(model => model.Contact.PhoneNumber, "", new {@class = "text-danger"})
                     </div>
@@ -64,7 +78,14 @@
                         <div class="form-group has-feedback">
                             <img src="~/Content/Images/calendar.png"/>
                             @Html.EditorFor(model => model.Contact.Birthdate,
-                                new {htmlAttributes = new {@class = "form-control input-lg", @id = "imp-birthdate", @placeholder = @Localization.Birthdate}})
+                                new
+                                {
+                                    htmlAttributes = new
+                                    {
+                                        @class = "form-control input-lg",
+                                        @placeholder = Localization.Birthdate, data_bind = "value: birthdate"
+                                    }
+                                })
                         </div>
                         @Html.ValidationMessageFor(model => model.Contact.Birthdate, "", new {@class = "text-danger"})
                     </div>
@@ -72,6 +93,8 @@
 
             </div>
         </div>
+        
+        @Html.ValidationMessageFor(model => model.Descriptions, "", new { @class = "text-danger" })
         <div class="richtext">
             <div class="row">
                 <div class="col-xs-12">
@@ -83,7 +106,7 @@
         </div>
         <div class="row">
             <div class="col-xs-12 text-right">
-                <button id="btn-send" type="submit" class="btn btn-danger btn-lg text-uppercase">
+                <button id="btn-send" data-bind="enable: activeSend" type="submit" class="btn btn-danger btn-lg text-uppercase">
                     @Localization.Send
                 </button>
 
@@ -95,6 +118,10 @@
 
 @section scripts
 {
-    <script src="~/Scripts/Reservation/EditResrvation.js"></script>
+    <script src="~/Scripts/ViewModel/ReservationViewModel.js"></script>
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var viewModel = new ReservationViewModel(@Html.HtmlConvertToJson(Model));
+        ko.applyBindings(viewModel);
+    </script>
 }

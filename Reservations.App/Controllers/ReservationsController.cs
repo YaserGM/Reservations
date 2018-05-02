@@ -7,9 +7,12 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
+using Newtonsoft.Json;
+using Reservations.App.Helper;
 using Reservations.App.Models;
 using Reservations.Business.Dto;
 using Reservations.Business.Services.Contacts;
+using Reservations.Business.Services.ContactTypes;
 using Reservations.Business.Services.Reservations;
 using Reservations.Core.Entities;
 using Reservations.Core.Enums;
@@ -21,12 +24,15 @@ namespace Reservations.App.Controllers
     {
         private readonly IReservationService _reservationService;
         private readonly IContactService _contactService;
+        private readonly IContactTypeService _contactTypeService;
 
 
-        public ReservationsController(IReservationService reservationService, IContactService contactService)
+        public ReservationsController(IReservationService reservationService, IContactService contactService,
+            IContactTypeService contactTypeService)
         {
             this._reservationService = reservationService;
             this._contactService = contactService;
+            this._contactTypeService = contactTypeService;
         }
 
         // GET: Reservations
@@ -46,123 +52,136 @@ namespace Reservations.App.Controllers
             return this.View(reservationDetoList);
         }
 
-        // GET: Reservations/Create
-        public ActionResult Create(int page, string sort)
+
+        public JsonResult FilterIndex(string sort, int page = 1)
         {
-            this.ViewBag.page = page;
+            var reservationDetoList = ReservationDetoList(page, sort);
+            return JsonHelper.ToJsonResult(reservationDetoList);
+        }
+
+
+        // GET: Reservations/Create
+        public ActionResult Create(int? page, string sort)
+        {
+            this.ViewBag.page = page ?? 1;
             this.ViewBag.sort = sort;
-            this.ViewBag.contactTypeList = Helper.EnumHelper.ToListSelectListItem<ContactTypeEnum>();
-            var reservationDto = new ReservationDto()
-            {
-                Contact = new Contact()
-            };
+
+            var list = _contactTypeService.GetAll().Items;
+            this.ViewBag.ContactTypeId = new SelectList(list, "Id", "Description");
+
+            var reservationDto = new ReservationViewModel();
             return View(reservationDto);
         }
 
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(ReservationDto reservationDto, int page, string sort)
+        //[ValidateAntiForgeryToken]
+        public ActionResult Create(ReservationViewModel reservationViewModel, int page, string sort)
         {
             this.ViewBag.page = page;
             this.ViewBag.sort = sort;
 
             if (ModelState.IsValid)
             {
-                reservationDto.CreateDate = DateTime.Now;
                 try
                 {
-                    var reservation = Mapper.Map<Reservation>(reservationDto);
-                    if (reservationDto.Contact.Id > 0)
+                    
+                    var contact = Mapper.Map<Contact>(reservationViewModel.Contact);
+                    if (contact.Id > 0)
                     {
-                        this._contactService.Update(reservationDto.Contact);
+                        this._contactService.Update(contact);
                     }
                     else
                     {
-                        Contact newContact = this._contactService.Add(reservationDto.Contact);
-                        reservationDto.Contact = newContact;
+                        contact = this._contactService.Add(contact);
+                        reservationViewModel.Contact = Mapper.Map<ContactViewModel>(contact);
                     }
-
-                    reservation.ContactId = reservation.Contact.Id;
+                    reservationViewModel.ContactId = contact.Id;
+                    var reservation = Mapper.Map<Reservation>(reservationViewModel);
                     this._reservationService.Add(reservation);
                     return RedirectToAction("Index", new {page, sort});
                 }
-                catch
+                catch (Exception)
                 {
-                    return this.View();
                 }
             }
-            this.ViewBag.contactTypeList = Helper.EnumHelper.ToListSelectListItem<ContactTypeEnum>();
-            return View(reservationDto);
+
+            var list = _contactTypeService.GetAll().Items;
+            this.ViewBag.ContactTypeId = new SelectList(list, "Id", "Description");
+            return View(reservationViewModel);
         }
 
         // GET: Reservations/Edit/5
-        public ActionResult Edit(int page, string sort, int id = 0)
+        public ActionResult Edit(int? page, string sort, int id = 0)
         {
-            this.ViewBag.page = page;
+            this.ViewBag.page = page ?? 1;
             this.ViewBag.sort = sort;
             if (id == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            this.ViewBag.contactTypeList = Helper.EnumHelper.ToListSelectListItem<ContactTypeEnum>();
+            var list = _contactTypeService.GetAll().Items;
+            this.ViewBag.ContactTypeId = new SelectList(list, "Id", "Description", id);
             var res = this._reservationService.Get(id);
-            var reservationDto = Mapper.Map<ReservationDto>(res);
+            var reservationDto = Mapper.Map<ReservationViewModel>(res);
             return this.View(reservationDto);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(ReservationDto reservationDto, int page, string sort)
+        public ActionResult Edit(ReservationViewModel reservationViewModel, int page, string sort)
         {
             this.ViewBag.page = page;
             this.ViewBag.sort = sort;
-            if (!this.ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
-                return this.View();
+                try
+                {
+                    var contact = Mapper.Map<Contact>(reservationViewModel.Contact);
+                    if (contact.Id > 0)
+                    {
+                        this._contactService.Update(contact);
+                    }
+                    else
+                    {
+                        contact = this._contactService.Add(contact);
+                        reservationViewModel.Contact = Mapper.Map<ContactViewModel>(contact);
+                    }
+                    reservationViewModel.ContactId = contact.Id;
+                    var reservation = Mapper.Map<Reservation>(reservationViewModel);
+                    this._reservationService.Update(reservation);
+                    return RedirectToAction("Index", new {page, sort});
+                }
+                catch (Exception ex)
+                {
+                    Console.Write(ex.Message);
+                }
             }
 
-            try
-            {
-                var reservation = Mapper.Map<Reservation>(reservationDto);
-                if (reservationDto.Contact.Id > 0)
-                {
-                    this._contactService.Update(reservationDto.Contact);
-                }
-                else
-                {
-                    Contact newContact = this._contactService.Add(reservationDto.Contact);
-                    reservationDto.Contact = newContact;
-                }
-
-                this._reservationService.Update(reservation);
-                return RedirectToAction("Index", new {page, sort});
-            }
-            catch
-            {
-                return this.View();
-            }
+            var list = _contactTypeService.GetAll().Items;
+            this.ViewBag.ContactTypeId = new SelectList(list, "Id", "Description");
+            return View(reservationViewModel);
         }
 
 
         [HttpPost]
         public ActionResult UpdateRating(int id, string value)
         {
-            if (id == 0)
-            {
-                return null;
-            }
+            if (id == 0) return null;
 
-            var reservation = this._reservationService.Get(id);
-            if (reservation != null)
-            {
-                reservation.RanKing = Double.Parse(value);
-                this._reservationService.Update(reservation);
-            }
+            var reservation = this._reservationService.UpdateRanKing(id, Double.Parse(value));
+            return JsonHelper.ToJsonResult(reservation);
+        }
 
-            return null;
+        [HttpPost]
+        public ActionResult UpdateFavorite(int id, bool value)
+        {
+            if (id == 0) return null;
+
+            var reservation = this._reservationService.UpdateFavorite(id, value);
+            return JsonHelper.ToJsonResult(reservation);
         }
 
         public JsonResult GetById(int id = 0)
@@ -173,10 +192,9 @@ namespace Reservations.App.Controllers
             }
 
             var reservation = this._reservationService.Get(id);
-            var reservationDto = Mapper.Map<ReservationDto>(reservation);
+            var reservationDto = Mapper.Map<ReservationViewModel>(reservation);
 
-            ContactDto contact = Mapper.Map<ContactDto>(reservationDto.Contact);
-            contact.BirthdateText = contact.BirthdateString();
+            ContactViewModel contact = Mapper.Map<ContactViewModel>(reservationDto.Contact);
             reservationDto.Contact = null;
 
             return this.Json(new List<Object>
@@ -187,7 +205,7 @@ namespace Reservations.App.Controllers
                 , JsonRequestBehavior.AllowGet);
         }
 
-        private List<ReservationDto> ReservationDetoList(int page, string sort)
+        private List<ReservationViewModel> ReservationDetoList(int page, string sort)
         {
             const int maxPage = 5;
             var skipCount = (page - 1) * maxPage;
@@ -196,11 +214,11 @@ namespace Reservations.App.Controllers
             var response =
                 this._reservationService.OrderBy(sortBy, new PageResult(skipCount, maxPage));
 
-            var reservationDetoList = Mapper.Map<List<Reservation>, List<ReservationDto>>(response.Items);
+            var reservationDetoList = Mapper.Map<List<Reservation>, List<ReservationViewModel>>(response.Items);
             this.ViewBag.PageCount = (int) Math.Ceiling((double) response.SourceTotal / maxPage);
             this.ViewBag.page = page;
             this.ViewBag.sort = sort;
-            this.ViewBag.listSorts = Helper.EnumHelper.ToListSelectListItem<OrderByEnum>();
+            this.ViewBag.listSorts = Helper.EnumHelper.ToLocalizationListSelectListItem<OrderByEnum>();
             return reservationDetoList;
         }
     }

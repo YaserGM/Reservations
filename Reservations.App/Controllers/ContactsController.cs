@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
+using Reservations.App.Helper;
 using Reservations.App.Models;
 using Reservations.Business.Dto;
 using Reservations.Business.Services.Contacts;
@@ -68,6 +69,7 @@ namespace Reservations.App.Controllers
             {
                 return HttpNotFound();
             }
+
             ViewBag.contactTypeList = Helper.EnumHelper.ToListSelectListItem<ContactTypeEnum>();
             return View(contact);
         }
@@ -94,6 +96,7 @@ namespace Reservations.App.Controllers
             {
                 return HttpNotFound();
             }
+
             return View(contact);
         }
 
@@ -107,7 +110,7 @@ namespace Reservations.App.Controllers
             {
                 _contactService.Delete(id);
             }
-           
+
             return RedirectToAction("Index");
         }
 
@@ -119,7 +122,7 @@ namespace Reservations.App.Controllers
             }
 
             var contact = this._contactService.Get(id);
-            var contactDto = Mapper.Map<ContactDto>(contact);
+            var contactDto = Mapper.Map<ContactViewModel>(contact);
 
 
             return this.Json(contact, JsonRequestBehavior.AllowGet);
@@ -133,14 +136,12 @@ namespace Reservations.App.Controllers
             }
 
             var contact = this._contactService.Get(name);
-            var contactDto = new ContactDto();
             if (contact != null)
             {
-                contactDto = Mapper.Map<ContactDto>(contact);
-                contactDto.BirthdateText = contactDto.BirthdateString();
+                return JsonHelper.ToJsonResult(Mapper.Map<ContactViewModel>(contact));
             }
 
-            return this.Json(contactDto, JsonRequestBehavior.AllowGet);
+            return null;
         }
 
         [HttpPost]
@@ -152,11 +153,10 @@ namespace Reservations.App.Controllers
             }
 
             var contact = this._contactService.Get(name);
-            var contactDto = new ContactDto();
+            var contactDto = new ContactViewModel();
             if (contact != null)
             {
-                contactDto = Mapper.Map<ContactDto>(contact);
-                contactDto.BirthdateText = contactDto.BirthdateString();
+                contactDto = Mapper.Map<ContactViewModel>(contact);
             }
 
             ViewBag.Contact = contactDto;
@@ -172,7 +172,7 @@ namespace Reservations.App.Controllers
             var response =
                 this._contactService.GetAll(new PageResult(skipCount, maxPage));
 
-            
+
             this.ViewBag.PageCount = (int) Math.Ceiling((double) response.SourceTotal / maxPage);
             this.ViewBag.page = page;
             return response.Items;

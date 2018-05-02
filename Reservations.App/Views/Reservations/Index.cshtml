@@ -1,10 +1,11 @@
 ﻿@using System.ServiceModel.Activities
+@using Reservations.App.Helper
 @using Reservations.Core
-@model IEnumerable<Reservations.App.Models.ReservationDto>
+@model IEnumerable<Reservations.App.Models.ReservationViewModel>
 
 @{
-    ViewBag.Title = "Reservations List";
-    ViewBag.LabelBtn = "Create Reservation";
+    ViewBag.Title = Localization.TitleReservationsList;
+    ViewBag.LabelBtn = Localization.TitleCreateReservation;
     ViewBag.Action = "Create";
     ViewBag.Controller = "Reservations";
 }
@@ -13,66 +14,69 @@
 
     @using (Html.BeginForm("Index", "Reservations", new {ViewBag.page, ViewBag.sort}, FormMethod.Post, new {id = "form-sort"}))
     {
-    <article class="create-edit-contact">
-        <div class="col-xs-12 col-sm-2 col-md-4">
-            <div class="my-input-group">
-                <img src="~/Content/Images/filter.png" />
-                @Html.DropDownList("sort", (List<SelectListItem>)this.ViewBag.listSorts, htmlAttributes: new { @class = "form-control input-lg", @id = "drowfiltre" })
+        <article class="create-edit-contact">
+            <div class="col-xs-12 col-sm-2 col-md-4">
+                <div class="my-input-group">
+                    <img src="~/Content/Images/filter.png"/>
+                    @Html.DropDownList("sort", (List<SelectListItem>) this.ViewBag.listSorts, htmlAttributes: new {@class = "form-control input-lg", @id = "drowfiltre"})
+                </div>
             </div>
-        </div>
 
 
-        <h4>
-            <div class="form-group-lg text-right">
-                @Html.ActionLink("View Contact List", "Index", "Contacts")
-            </div>
-        </h4>
+            <h4>
+                <div class="form-group-lg text-right">
+                    @Html.ActionLink(Localization.TitleContactList, "Index", "Contacts")
+                </div>
+            </h4>
 
-    </article>
+        </article>
     }
 
+    <div style="display: none" data-bind="visible: reservations().length > 0">
+        <table class="table table-responsive index-table">
+            <tbody data-bind="foreach: reservations">
+            <tr class="index-cell">
+                <td>
 
-    <div>
-        <table class="table table-responsive index-table" id="tableReserv">
+                    <div class="col-xs-12 col-sm-6 col-md-2 container-none">
+                        <img src="@Url.Content("~/Content/Images/reservationLogo.png")" alt="Image"
+                             width="50" height="50"/>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-10">
+                        <label data-bind="text: Contact.Name"> </label>
+                        <br/>
+                        <label data-bind="text: CreateDateLabel" class="label-date-disable"> </label>
+                    </div>
+                </td>
 
-            @foreach (var item in Model)
-            {
-                <tr class="index-cell">
-                    <td>
+                <td class="container-none">
+                    <div class="text-left">
+                        <label>@Localization.RanKing</label>
+                        <br/>
+                        <input data-bind="attr: { id: ('imp-' + Id), value: RanKing}" type="text" class="rating">
+                    </div>
+                </td>
 
-                        <div class="col-xs-12 col-sm-8 col-md-2">
-                            <img src="@Url.Content("~/Content/Images/reservationLogo.png")" alt="Image"
-                                 width="50" height="50"/>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-10">
-                            @Html.DisplayFor(modelItem => item.Contact.Name)
-                            <br/>
-                             @Html.DisplayFor(modelItem => item.CreateDate) 
-                        </div>
+                <td >
+                    <div class="text-left">
+                        <label data-bind="click: $parent.changeFavorite, attr: { id: ('label-' + Id), class: (Favorite ? 'label-disable' : 'label-enable') }" >@Localization.AddFavorite</label> 
+                        <img data-bind="click: $parent.changeFavorite, attr: { id: ('img-' + Id), class: (Favorite ? 'img-favorite-enable' : 'img-favorite-disable') }" alt="Image"/>
+                    </div>
+                </td>
 
+                <td>
+                    <div class="text-right">
+                        <a data-bind="attr: { href : ('@Url.Action("Edit", "Reservations", new {ViewBag.page, ViewBag.sort})' +'&amp;id=' + Id)}" class="btn text-uppercase">
+                            @Localization.Edit
+                        </a>
 
-                    </td>
-                    <td>
-                        <div class="text-left">
-                            @Html.LabelFor(modelItem => item.RanKing)
+                    </div>
+                </td>
 
-                            @Html.TextBoxFor(modelItem => item.RanKing, htmlAttributes: new {@class = "rating", @id = "imp-" + @item.Id})
-                        </div>
-                    </td>
-                    <td>
-                        <div> <label>Add Favorite</label> <img src="@Url.Content("~/Content/Images/heartDisable.png")" alt="Image"/></div>
-                    </td>
-                    <td>
-                        <div class="text-right">
-                            <a href="@Url.Action("Edit", "Reservations", new {ViewBag.page, ViewBag.sort, id = item.Id})" class="btn text-uppercase">@Localization.Edit</a>
-                        </div>
-                    </td>
-                </tr>
-            }
-
+            </tr>
+            </tbody>
         </table>
     </div>
-
 
     <!-- Pagination component -->
     <nav class="index-table-footer">
@@ -110,31 +114,12 @@
 
 </article>
 
-<script type="text/javascript">
-    $(document).ready(
-        $("#drowfiltre").change(function() {
-            if ($("#drowfiltre").val() !== "0") {
-                $("#form-sort").submit();
-            }
-        })
-    );
 
-
-    //call in function starClick by file "start-rating.js"
-    function updateRating(impId, startValue) {
-        var compId = parseInt(impId.split("-")[1]);
-
-        $.ajax({
-            type: 'POST',
-            url: '@Url.Action("UpdateRating")',
-            dataType: 'json',
-            data: { id: compId, value: startValue },
-            success: function(stops) {
-            },
-            error: function(ex) {
-            }
-        });
-
-
-    }
-</script>
+@section scripts
+{
+    <script src="~/Scripts/ViewModel/ReservationsViewModel.js"></script>
+    <script>
+        var viewModel = new ReservationsViewModel(@Html.HtmlConvertToJson(Model));
+        ko.applyBindings(viewModel);
+    </script>
+}

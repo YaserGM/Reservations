@@ -34,9 +34,18 @@ body {
     margin: auto;
 }
 
+.main-link {
+    display: none;
+    color: white;
+}
+
 @media (max-width: 767px) {
     #mainHeader .banner {
         height: 70px;
+    }
+    .main-link {
+        display: block;
+        color: white;
     }
 }
 
@@ -62,7 +71,7 @@ body {
     .btn {
         margin: 0;
         min-width: 100px;
-        padding: 5px 15px;
+        padding: 5px 5px;
         background-color: #acacac;
         color: #ffffff;
         font-size: 13pt;
@@ -88,3 +97,4 @@ body {
 .glyphicon-warning-sign {
     color: #e7d823;
 }
+

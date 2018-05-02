@@ -2,12 +2,11 @@
     background-color: #fafafa;
     padding: 5px;
 }
-.index-table {
-    margin: 5px;
-}
-    .index-table tbody tr {
-        border-bottom: 5px solid #fafafa;
-    }
+
+.index-table { margin: 1px; }
+
+.index-table tbody tr { border-bottom: 5px solid #fafafa; }
+
 .index-table,
 .index-table thead tr th,
 .index-table tbody tr td {
@@ -34,9 +33,66 @@
     border-radius: 4px;
     background-color: #ededed;
 }
-    .index-table-footer .pagination > li > a:hover,
-    .index-table-footer .pagination > li.active a {
-        color: #ffffff;
-        background-color: #5e5e5e;
-        border-color: #c4c4c4;
+
+.index-table-footer .pagination > li > a:hover,
+.index-table-footer .pagination > li.active a {
+    color: #ffffff;
+    background-color: #5e5e5e;
+    border-color: #c4c4c4;
+}
+
+label { color: #4A4A4A }
+
+.label-date-disable { color: #909090; }
+
+.label-disable {
+    color: #909090;
+    cursor: pointer
+}
+
+.label-enable {
+    color: #4A4A4A;
+    cursor: pointer
+}
+
+.img-favorite-disable {
+    content: url(Images/heartDisable.png);
+    cursor: pointer
+}
+
+.img-favorite-enable {
+    content: url(Images/heartEnable.png);
+    cursor: pointer
+}
+
+
+
+@media (max-width: 767px) {
+    .index-table-footer { display: none; }
+    .container-none { display: none; }
+    .label-disable { display: none; }
+    .label-enable { display: none; }
+
+    .img-favorite-disable {
+        width: 5%;
+        height: 5%;
     }
+
+    .img-favorite-enable {
+        width: 5%;
+        height: 5%;
+    }
+
+    .index-table { margin: 1px; }
+
+    .index-table,
+    .index-table thead tr th,
+    .index-table tbody tr td { font-size: 10pt; }
+
+
+    .btn {
+        min-width: 40px;
+        padding: 5px 5px;
+        font-size: 10pt;
+    }
+}

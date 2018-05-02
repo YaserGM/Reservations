@@ -3,8 +3,8 @@
 @model IEnumerable<Reservations.Core.Entities.Contact>
 
 @{
-    ViewBag.Title = "Contact List";
-    ViewBag.LabelBtn = "Create Contact";
+    ViewBag.Title = Localization.TitleContactList;
+    ViewBag.LabelBtn = Localization.CreateContact;
     ViewBag.Action = "Create";
     ViewBag.Controller = "Contacts";
 }
@@ -13,24 +13,25 @@
 
 
     <h4>
-        <div class="form-group-lg text-right">
-            @Html.ActionLink("Back to Reservations List", "Index", "Reservations")
+        <div class="text-right">
+            
+            @Html.ActionLink(Localization.TitleReservationsList, "Index", "Reservations")
         </div>
     </h4>
 
     <table class="table table-responsive index-table">
         <tr>
             <th style="text-align: left">
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayName(Localization.Name)
             </th>
             <th style="text-align: left">
-                @Html.DisplayNameFor(model => model.PhoneNumber)
+                @Html.DisplayName(Localization.PhoneNumber)
             </th>
             <th style="text-align: left">
-                @Html.DisplayNameFor(model => model.Birthdate)
+                @Html.DisplayName(Localization.Birthdate)
             </th>
             <th style="text-align: left">
-                @Html.DisplayNameFor(model => model.ContactType)
+                @Html.DisplayName(Localization.ContactType)
             </th>
             <th></th>
         </tr>
@@ -48,17 +49,11 @@
                     @Html.DisplayFor(modelItem => item.Birthdate)
                 </td>
                 <td>
-                    @{
-                        ContactTypeEnum.TryParse(item.ContactType.ToString(), out ContactTypeEnum contType);
-                        ViewBag.type = contType.ToString();
-                    }
-
-                    <p>@ViewBag.type</p>
-
+                    @Html.DisplayFor(modelItem => item.ContactType.Description)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    @Html.ActionLink(Localization.Edit, "Edit", new { id = item.Id }) |
+                    @Html.ActionLink(Localization.Delete, "Delete", new { id = item.Id })
                 </td>
             </tr>
         }
