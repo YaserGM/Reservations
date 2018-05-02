@@ -18,8 +18,9 @@ namespace Reservations.App
         {
             Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<Contact, ContactDto>();
-                cfg.CreateMap<Reservation, ReservationDto>();
+                cfg.CreateMap<Contact, ContactViewModel>();
+                cfg.CreateMap<Reservation, ReservationViewModel>();
+                cfg.CreateMap<ContactType, ContactTypeViewModel>();
             });
         }
 

@@ -2,6 +2,7 @@
 using Autofac;
 using Autofac.Integration.Mvc;
 using Reservations.Business.Services.Contacts;
+using Reservations.Business.Services.ContactTypes;
 using Reservations.Business.Services.Reservations;
 using Reservations.DataAccess.Contracts;
 using Reservations.DataAccess.UnitOfWorkImpl;
@@ -31,12 +32,10 @@ namespace Reservations.App
 
             // MVC - OPTIONAL: Enable property injection into action filters.
             builder.RegisterFilterProvider();
-
-            // Register application dependencies.
-            ///builder.RegisterType<DataContextLocal>().As<DataContextLocal>();
-
+            
             builder.RegisterType<SqlUnitOfWork>().As<IUnitOfWork>();
             builder.RegisterType<ContactService>().As<IContactService>();
+            builder.RegisterType<ContactTypeService>().As<IContactTypeService>();
             builder.RegisterType<ReservationService>().As<IReservationService>();
             
 
