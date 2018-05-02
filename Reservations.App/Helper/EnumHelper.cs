@@ -28,8 +28,6 @@ namespace Reservations.App.Helper
                 var attributeDescription =
                     member.GetCustomAttributes(typeof(System.ComponentModel.DescriptionAttribute), false);
 
-                //var description = member.Name;
-
                 var description = Localization.ResourceManager.GetString(member.Name);
 
                 var value = ((int) Enum.Parse(t, member.Name));

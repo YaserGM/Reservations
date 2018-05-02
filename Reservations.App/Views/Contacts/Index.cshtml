@@ -14,7 +14,7 @@
 
     <h4>
         <div class="text-right">
-            
+
             @Html.ActionLink(Localization.TitleReservationsList, "Index", "Reservations")
         </div>
     </h4>
@@ -46,14 +46,17 @@
                     @Html.DisplayFor(modelItem => item.PhoneNumber)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Birthdate)
+                    @{
+                        ViewBag.Birthd = item.Birthdate.ToString("dd-MM-yyyy");
+                    }
+                    <p>@ViewBag.Birthd</p>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ContactType.Description)
                 </td>
                 <td>
-                    @Html.ActionLink(Localization.Edit, "Edit", new { id = item.Id }) |
-                    @Html.ActionLink(Localization.Delete, "Delete", new { id = item.Id })
+                    @Html.ActionLink(Localization.Edit, "Edit", new {id = item.Id}) |
+                    @Html.ActionLink(Localization.Delete, "Delete", new {id = item.Id})
                 </td>
             </tr>
         }

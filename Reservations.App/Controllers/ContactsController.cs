@@ -11,6 +11,8 @@ using Reservations.App.Helper;
 using Reservations.App.Models;
 using Reservations.Business.Dto;
 using Reservations.Business.Services.Contacts;
+using Reservations.Business.Services.ContactTypes;
+using Reservations.Core;
 using Reservations.Core.Entities;
 using Reservations.Core.Enums;
 using Reservations.DataAccess.DataContext;
@@ -20,11 +22,12 @@ namespace Reservations.App.Controllers
     public class ContactsController : Controller
     {
         private readonly IContactService _contactService;
+        private readonly IContactTypeService _contactTypeService;
 
-
-        public ContactsController(IContactService contactService)
+        public ContactsController(IContactService contactService, IContactTypeService contactTypeService)
         {
             this._contactService = contactService;
+            this._contactTypeService = contactTypeService;
         }
 
 
@@ -37,27 +40,36 @@ namespace Reservations.App.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.contactTypeList = Helper.EnumHelper.ToListSelectListItem<ContactTypeEnum>();
+            var list = _contactTypeService.GetAll().Items;
+            this.ViewBag.ContactTypeId = new SelectList(list, "Id", "Description");
             return View();
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,PhoneNumber,Birthdate,Contacttype")]
-            Contact contact)
+        public ActionResult Create([Bind(Include = "Id,Name,PhoneNumber,Birthdate,ContactTypeId")]
+            ContactViewModel contact)
         {
             if (ModelState.IsValid)
             {
                 var findContact = _contactService.Get(contact.Name);
                 if (findContact == null)
                 {
-                    _contactService.Add(contact);
+                    _contactService.Add(Mapper.Map<Contact>(contact));
                     return RedirectToAction("Index");
+                }
+                else
+                {
+                    this.ModelState.AddModelError("Name", Localization.ContactExist);
                 }
             }
 
+            
+
             contact.Name = null;
+            var list = _contactTypeService.GetAll().Items;
+            this.ViewBag.ContactTypeId = new SelectList(list, "Id", "Description");
             return View(contact);
         }
 
@@ -70,21 +82,24 @@ namespace Reservations.App.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.contactTypeList = Helper.EnumHelper.ToListSelectListItem<ContactTypeEnum>();
-            return View(contact);
+            var list = _contactTypeService.GetAll().Items;
+            this.ViewBag.ContactTypeId = new SelectList(list, "Id", "Description", id);
+            return View(Mapper.Map<ContactViewModel>(contact));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,PhoneNumber,Birthdate,Contacttype")]
-            Contact contact)
+        public ActionResult Edit([Bind(Include = "Id,Name,PhoneNumber,Birthdate,ContactTypeId")]
+            ContactViewModel contact)
         {
             if (ModelState.IsValid)
             {
-                _contactService.Update(contact);
+                _contactService.Update(Mapper.Map<Contact>(contact));
                 return RedirectToAction("Index");
             }
 
+            var list = _contactTypeService.GetAll().Items;
+            this.ViewBag.ContactTypeId = new SelectList(list, "Id", "Description", contact.Id);
             return View(contact);
         }
 

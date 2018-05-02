@@ -35,6 +35,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework">
       <HintPath>..\packages\MSTest.TestFramework.1.1.17\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
@@ -90,6 +96,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ReservationServiceTest.cs" />
+    <Compile Include="Services\ContactServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
@@ -101,6 +109,18 @@
     <ProjectReference Include="..\Reservations.App\Reservations.App.csproj">
       <Project>{F955C697-A54B-4223-A3D4-122BB0BE9003}</Project>
       <Name>Reservations.App</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Reservations.Business\Reservations.Business.csproj">
+      <Project>{838CAF1A-395D-46AF-90DC-A2C45E425EC3}</Project>
+      <Name>Reservations.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Reservations.Core\Reservations.Core.csproj">
+      <Project>{F31FFC72-2DED-4A16-9C11-498BA03A3640}</Project>
+      <Name>Reservations.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Reservations.DataAccess\Reservations.DataAccess.csproj">
+      <Project>{8B3489B8-F701-4AE9-B4DA-98F1D7B60197}</Project>
+      <Name>Reservations.DataAccess</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

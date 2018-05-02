@@ -132,6 +132,9 @@
   <data name="BtnReservationList" xml:space="preserve">
     <value>Reservation List</value>
   </data>
+  <data name="ContactExist" xml:space="preserve">
+    <value>The contact name exit</value>
+  </data>
   <data name="ContactName" xml:space="preserve">
     <value>Contact Name</value>
   </data>
@@ -159,11 +162,20 @@
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="DeleteContact" xml:space="preserve">
+    <value>Delete Contact</value>
+  </data>
+  <data name="DeleteMsg" xml:space="preserve">
+    <value>Are you sure you want to delete contact?</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
+  </data>
+  <data name="EditContact" xml:space="preserve">
+    <value>Edit Contact</value>
   </data>
   <data name="FieldRequired" xml:space="preserve">
     <value>The field {0} is required.</value>

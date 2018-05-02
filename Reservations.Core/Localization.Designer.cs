@@ -106,6 +106,15 @@ namespace Reservations.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The contact name exit.
+        /// </summary>
+        public static string ContactExist {
+            get {
+                return ResourceManager.GetString("ContactExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact Name.
         /// </summary>
         public static string ContactName {
@@ -187,6 +196,24 @@ namespace Reservations.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Contact.
+        /// </summary>
+        public static string DeleteContact {
+            get {
+                return ResourceManager.GetString("DeleteContact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete contact?.
+        /// </summary>
+        public static string DeleteMsg {
+            get {
+                return ResourceManager.GetString("DeleteMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string Description {
@@ -201,6 +228,15 @@ namespace Reservations.Core {
         public static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Contact.
+        /// </summary>
+        public static string EditContact {
+            get {
+                return ResourceManager.GetString("EditContact", resourceCulture);
             }
         }
         
